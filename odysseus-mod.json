@@ -1,0 +1,44 @@
+{
+  "manifest_version": 1,
+  "id": "devops",
+  "name": "DevOps",
+  "version": "0.1.0",
+  "description": "What Odysseus is doing right now, how fast your models write, and which coder finishes its runs, with each run's transcript.",
+  "author": "Jaron Wilson",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/Jaron-Wilson/odysseus-devops",
+  "min_core": "0.1",
+  "tags": ["monitoring", "dev-tools", "ai"],
+  "runtime": {
+    "type": "process",
+    "command": ["python", "-m", "devops_mod"],
+    "health": "/health",
+    "start": "lazy",
+    "idle_stop_minutes": 5
+  },
+  "permissions": ["stats.read"],
+  "ui": {
+    "tabs": [{ "id": "devops", "title": "DevOps", "icon": "devops", "path": "/", "section": "build",
+               "after": "claude-sessions", "replaces": "devops" }],
+    "home_cards": [{ "id": "now", "title": "Happening now", "path": "/cards/now", "height": 120 }],
+    "settings_path": "/settings"
+  },
+  "tools": { "endpoint": "/mod/tools",
+             "keywords": ["devops", "tokens per second", "tok/s", "model speed", "coder runs", "what is running"] },
+  "tutorial": {
+    "version": 1,
+    "steps": [
+      { "title": "Happening now",
+        "body": "The top of the **DevOps** tab lists what Odysseus is doing this second: replies being written, coder runs (Claude Code, OpenCode, Antigravity), shell jobs and queued messages. It refreshes every few seconds while the tab is open, and does nothing while it is closed." },
+      { "title": "How fast your models are",
+        "body": "**Model speed** shows tokens per second (all tokens over the time spent writing them), tokens per hour, the wait for the first token and a chart of output over time, per model. Pick the window at the top: the last hour, 24 hours, 7 days or 30 days." },
+      { "title": "Which coder does best",
+        "body": "**Coders** counts each coder's runs, how many finished OK, failed or were cut off, their average time and cost. Under **Recent runs**, *view transcript* opens a run's parsed transcript (thinking, tool calls and results) and *copy resume* gives you the command to pick it up again. *open chat* opens the chat it ran in, in a new tab." },
+      { "title": "Defaults, export and import",
+        "body": "Settings has the window the tab opens with, how often it refreshes and which sections it shows. **Export** saves those settings (and, if you want, a snapshot of the numbers) as a JSON file; **Import** brings them back.",
+        "action": { "label": "Open settings", "settings": true } },
+      { "title": "Ask the agent",
+        "body": "In a chat, ask *what's running right now?* or *how many tokens per second is my model doing in devops?* The agent answers with this mod's `devops_summary` tool. The Home page has a small **Happening now** card." }
+    ]
+  }
+}
